@@ -1,0 +1,194 @@
+*vim-improve-diff.txt* A small plugin to improve diff feature in Vim
+
+Version: 0.1.0
+Author:  Alisue <lambdalisue@hashnote.net>	*vim-improve-diff-author*
+Support: Vim 7.3 and above
+License: MIT license  {{{
+	Copyright (c) 2015 Alisue, hashnote.net
+
+	Permission is hereby granted, free of charge, to any person obtaining
+	a copy of this software and associated documentation files
+	(the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+	CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+	TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+=============================================================================
+CONTENTS					*vim-improve-diff-contents*
+
+Introduction		|vim-improve-diff-introduction|
+Install			|vim-improve-diff-install|
+Usage			|vim-improve-diff-usage|
+Interface		|vim-improve-diff-interface|
+  Options		|vim-improve-diff-interface-options|
+  Mappings		|vim-improve-diff-interface-mappings|
+  Functions		|vim-improve-diff-interface-functions|
+  Commands		|vim-improve-diff-interface-commands|
+
+
+==============================================================================
+INTRODUCTION					*vim-improve-diff-introduction*
+
+*vim-improve-diff* is a plugin to improve diff feature in Vim.
+It provide the following features:
+
+Auto diffupdate (|improve_diff#auto_diffupdate()|)
+When user leave an insert mode, it call |diffupdate| when the current buffer
+is in diff mode.
+
+
+Auto diffoff (|improve_diff#auto_diffoff()|)
+When user close a diff buffer, it count the number of diff buffer in a current
+tab page and call |diffoff|! when there is only a single diff buffer remains.
+
+
+Improved |:DiffOrig| command
+If no |:DiffOrig| command is defined, it automatically define an improved
+version of |:DiffOrig| command.
+
+
+You would probably interested in lambdalisue/vim-unified-diff which use
+a 'histogram' algorithm to improve the quality of diff.
+
+- lambdalisue/vim-unified-diff: https://github.com/lambdalisue/vim-unified-diff
+
+
+==============================================================================
+INSTALL						*vim-improve-diff-install*
+
+The repository (https://github.com/lambdalisue/vim-improve-diff) follow a
+standard vim plugin's directory structure thus you can use Vundle.vim or
+neobundle.vim to install |vim-improve-diff| like:
+>
+	" Vundle.vim
+	Plugin 'lambdalisue/vim-improve-diff'
+
+	" neobundle.vim
+	NeoBundle 'lambdalisue/vim-improve-diff'
+<
+
+
+==============================================================================
+INTERFACE					*vim-improve-diff-interface*
+
+------------------------------------------------------------------------------
+Options					*vim-improve-diff-interface-options*
+
+				*g:improve_diff#enable*
+g:improve_diff#enable
+	
+	Enable all features of vim-improve-diff.
+	The default value is 1.
+
+				*g:improve_diff#enable_auto_diffupdate*
+g:improve_diff#enable_auto_diffupdate
+
+
+	Enable auto diffupdate feature (|improve_diff#auto_diffupdate()|).
+	This option takes effect only when |g:improve_diff#enable| is 0.
+	The default value is 0.
+
+				*g:improve_diff#enable_auto_diffoff*
+g:improve_diff#enable_auto_diffoff
+
+	Enable auto diffoff feature (|improve_diff#auto_diffoff()|).
+	This option takes effect only when |g:improve_diff#enable| is 0.
+	The default value is 0.
+
+				*g:improve_diff#define_DiffOrig*
+g:improve_diff#define_DiffOrig
+
+	Define an improved version of :DiffOrig.
+	The default value is 1 if :DiffOrig has not been defined, otherwise
+	the default value is 0.
+
+------------------------------------------------------------------------------
+Mappings				*vim-improve-diff-interface-mappings*
+
+					*<Plug>(improve-diff-diffupdate)*
+<Plug>(improve-diff-diffupdate)
+
+	Call |diff_improve#diffupdate()|
+
+					*<Plug>(improve-diff-diffoff)*
+<Plug>(improve-diff-diffoff)
+
+	Call |diff_improve#diffoff()|
+
+					*<Plug>(improve-diff-difforig-h)*
+<Plug>(improve-diff-difforig-h)
+
+	Call |diff_improve#difforig()| to horizontally open a original version.
+
+					*<Plug>(improve-diff-difforig-v)*
+<Plug>(improve-diff-difforig-v)
+
+	Call |diff_improve#difforig()| to vertically open a original version.
+
+
+-------------------------------------------------------------------------------
+Functions				*vim-improve-diff-interface-functions*
+
+					*diff_improve#enable()*
+diff_improve#enable()
+
+	Enable all feature of vim-improve-diff.
+
+					*diff_improve#enable_auto_diffupdate()*
+diff_improve#enable_auto_diffupdate()
+
+	Enable auto diffupdate feature. It define an autocmd to call
+	|diff_improve#diffupdate()| when user leave an insert mode.
+
+					*diff_improve#enable_auto_diffoff()*
+diff_improve#enable_auto_diffoff()
+
+	Enable auto diffoff feature. It define an autocmd to call
+	|diff_improve#diffoff()| when user close a buffer.
+
+					*diff_improve#diffupdate()*
+diff_improve#diffupdate([{expr}])
+
+	It takes effect only when the current buffer is in diff mode.
+	It call |diffupdate| on the current buffer.
+
+					*diff_improve#diffoff()*
+diff_improve#diffoff([{expr}])
+
+	It takes effect only when the current buffer is in diff mode.
+	It call ||diffoff| on the current buffer and count the number of buffer
+	which is in diff mode in the current tabpage and call |diffoff|! when
+	only a single diff buffer remains.
+
+					*diff_improve#difforig()*
+diff_improve#difforig([{horizontal}])
+
+	It open a current saved version of the current buffer in diff mode.
+	It is an improved version of :DiffOrig command of
+	$VIMRUNTIME/vimrc_example.vim.
+	If {horizontal} is 1, it open the saved version horizontally.
+
+
+-------------------------------------------------------------------------------
+Commands				*vim-improve-diff-interface-commands*
+
+					*:DiffOrig-improved*
+:DiffOrig [{horizontal}]
+
+	It call |diff_improve#difforig()|.
+
+
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl:noet
