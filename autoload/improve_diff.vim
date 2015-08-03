@@ -54,7 +54,7 @@ endfunction " }}}
 function! improve_diff#enable_auto_diffoff() abort " {{{
   augroup vim-improve-diff-auto-diffoff
     autocmd! *
-    autocmd BufWinLeave * call improve_diff#diffoff(expand('<afile>'))
+    autocmd BufUnload * call improve_diff#diffoff(expand('<afile>'))
   augroup END
 endfunction " }}}
 function! improve_diff#enable() abort " {{{
