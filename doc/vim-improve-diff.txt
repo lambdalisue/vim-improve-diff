@@ -51,8 +51,7 @@ is in diff mode.
 
 
 Auto diffoff (|improve_diff#auto_diffoff()|)
-When user close a diff buffer, it count the number of diff buffer in a current
-tab page and call |diffoff|! when there is only a single diff buffer remains.
+When user close a diff buffer, automatically call |diffoff|.
 
 
 Improved |:DiffOrig| command
@@ -169,9 +168,7 @@ diff_improve#diffupdate([{expr}])
 diff_improve#diffoff([{expr}])
 
 	It takes effect only when the current buffer is in diff mode.
-	It call ||diffoff| on the current buffer and count the number of buffer
-	which is in diff mode in the current tabpage and call |diffoff|! when
-	only a single diff buffer remains.
+	It call ||diffoff| on the {expr} or current buffer window.
 
 					*diff_improve#difforig()*
 diff_improve#difforig([{horizontal}])

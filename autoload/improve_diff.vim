@@ -3,24 +3,13 @@ set cpo&vim
 
 function! improve_diff#diffoff(...) abort " {{{
   let expr = get(a:000, 0, '%')
-  if getwinvar(bufwinnr(expr), '&l:diff')
-    diffoff
-    " check the number of diff buffer in the current tab page
-    let n = 0
-    for winnum in range(winnr('$'))
-      if getwinvar(winnum, '&l:diff')
-        let n += 1
-      endif
-    endfor
-    " call diffoff if only a single buffer is in diff mode
-    if n == 1
-      diffoff!
-    endif
+  if getwinvar(bufwinnr(expr), '&diff')
+    call setwinvar(bufwinnr(expr), '&diff', 0)
   endif
 endfunction " }}}
 function! improve_diff#diffupdate(...) abort " {{{
   let expr = get(a:000, 0, '%')
-  if getwinvar(bufwinnr(expr), '&l:diff')
+  if getwinvar(bufwinnr(expr), '&diff')
     diffupdate
   endif
 endfunction " }}}
@@ -54,7 +43,7 @@ endfunction " }}}
 function! improve_diff#enable_auto_diffoff() abort " {{{
   augroup vim-improve-diff-auto-diffoff
     autocmd! *
-    autocmd BufUnload * call improve_diff#diffoff(expand('<afile>'))
+    autocmd BufWinLeave * call improve_diff#diffoff(expand('<afile>'))
   augroup END
 endfunction " }}}
 function! improve_diff#enable() abort " {{{
